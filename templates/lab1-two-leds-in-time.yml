@@ -1,0 +1,52 @@
+name: Blinky test two leds
+version: 1
+
+steps:
+  - wait-serial: 'Setup ended' 
+# button press
+  - set-control:
+      part-id: {{ .btn1 }}
+      control: pressed
+      value: 1
+  - delay: 100ms
+  - set-control:
+      part-id: {{ .btn1 }}
+      control: pressed
+      value: 0
+  - delay: 500ms
+# leds test
+  - expect-pin:
+      part-id: {{ .led1 }}
+      pin: A
+      value: 1
+  - expect-pin:
+      part-id: {{ .led2 }}
+      pin: A
+      value: 1
+  - delay: {{ .led_delay }}
+  - expect-pin:
+      part-id: {{ .led3 }}
+      pin: A
+      value: 1
+  - expect-pin:
+      part-id: {{ .led4 }}
+      pin: A
+      value: 1
+  - delay: {{ .led_delay }}
+  - expect-pin:
+      part-id: {{ .led5 }}
+      pin: A
+      value: 1
+  - expect-pin:
+      part-id: {{ .led6 }}
+      pin: A
+      value: 1
+  - delay: {{ .led_delay }}
+  - expect-pin:
+      part-id: {{ .led7 }}
+      pin: A
+      value: 1
+  - expect-pin:
+      part-id: {{ .led8 }}
+      pin: A
+      value: 1
