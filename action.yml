@@ -21,7 +21,7 @@ runs:
   steps:
     - name: Generate Test Scenario
       run: |
-        ./lab1-parse \
+        ./lab1-parser \
           -variant=${{ inputs.variant_number }}
           -variants-path=${{ github.action_paths }}/variants/lab${{ inputs.lab_number }}.yml 
           -wokwi-config=${{ inputs.wokwi_toml_path }} 
