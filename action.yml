@@ -11,6 +11,10 @@ inputs:
   wokwi_toml_path:
     description: "Path to wokwi.toml file"
     required: true
+  output:
+    description: "Output file"
+    required: false
+    default: "test_scenario.yml"
 
 outputs:
   test_scenario:
@@ -25,12 +29,13 @@ runs:
           -variant=${{ inputs.variant_number }} \
           -variants-path=${{ github.action_path }}/variants/lab${{ inputs.lab_number }}.yml \
           -wokwi-config=${{ inputs.wokwi_toml_path }} \
-          -output=test_scenario.yml \
+          -output=${{ inputs.output }} \
           -root-path=${{ github.action_path }}
-        echo "Generated test scenario file: test_scenario.yml"
+        echo "Generated test scenario file: ${{ github.action_path }}"
       shell:  bash
+    
     - name: Set output
       id: set_output
       run: |
-        echo "test_scenario='test_scenario.yml'" >> $GITHUB_OUTPUT ';'
+        echo "test_scenario='${{ inputs.output }}'" >> $GITHUB_OUTPUT
       shell:  bash
