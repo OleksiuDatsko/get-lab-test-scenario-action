@@ -23,7 +23,7 @@ runs:
       run: |
         ${{ github.action_path }}/lab${{ inputs.lab_number }}-parser \
           -variant=${{ inputs.variant_number }} \
-          -variants-path=${{ github.action_paths }}/variants/lab${{ inputs.lab_number }}.yml \
+          -variants-path=${{ github.action_path }}/variants/lab${{ inputs.lab_number }}.yml \
           -wokwi-config=${{ inputs.wokwi_toml_path }} \
           -output=test_scenario.yml
         echo "Generated test scenario file: test_scenario.yml"
