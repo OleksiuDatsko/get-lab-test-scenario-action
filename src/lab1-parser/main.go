@@ -52,6 +52,7 @@ func main() {
 	variantsPath := flag.String("variants-path", "", "Path to the variants file (required)")
 	wokwiConfig := flag.String("wokwi-config", "", "Path to the Wokwi configuration file (required)")
 	outputFile := flag.String("output", "", "Path to the output file (required)")
+	rootPath := flag.String("root-path", "", "Path to the root directory")
 
 	// Display help message if no flags are provided
 	flag.Usage = func() {
@@ -106,7 +107,12 @@ func main() {
 	}
 	defer f.Close()
 
-	tmpl, err := template.ParseFiles(variant.Template)
+	tp := variant.Template
+	if *rootPath != "" {
+		tp = *rootPath + "/" + variant.Template
+	}
+
+	tmpl, err := template.ParseFiles(tp)
 	if err != nil {
 		log.Fatalf("Error parsing template: %v", err)
 	}
