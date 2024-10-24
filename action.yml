@@ -31,6 +31,7 @@ runs:
           -wokwi-config=${{ inputs.wokwi_toml_path }} \
           -output=${{ inputs.output }} \
           -root-path=${{ github.action_path }}
+        cat ${{ inputs.output }}
         echo "Generated test scenario file: ${{ github.action_path }}"
       shell:  bash
     
