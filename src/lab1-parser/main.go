@@ -7,44 +7,7 @@ import (
 	"os"
 	"strings"
 	"text/template"
-
-	"github.com/BurntSushi/toml"
-	"gopkg.in/yaml.v3"
 )
-
-type Variant struct {
-	ID       string `yaml:"id"`
-	Template string `yaml:"template"`
-	Steps    string `yaml:"steps"`
-}
-
-type VariantsData struct {
-	Variants []Variant `yaml:"variants"`
-}
-
-func getVariantByID(filePath string, variantID string) (Variant, error) {
-	// Read the YAML file
-	yamlFile, err := os.ReadFile(filePath)
-	if err != nil {
-		return Variant{}, fmt.Errorf("could not read file: %v", err)
-	}
-
-	// Parse the YAML data
-	var data VariantsData
-	err = yaml.Unmarshal(yamlFile, &data)
-	if err != nil {
-		return Variant{}, fmt.Errorf("error parsing YAML: %v", err)
-	}
-
-	// Search for the variant by ID
-	for _, variant := range data.Variants {
-		if variant.ID == variantID {
-			return variant, nil
-		}
-	}
-
-	return Variant{}, fmt.Errorf("variant with ID %s not found", variantID)
-}
 
 func main() {
 	// Define the flags
@@ -71,31 +34,36 @@ func main() {
 		os.Exit(1)
 	}
 
-	variant, err := getVariantByID(*variantsPath, *variantID)
+	variant, err := getVariantById(*variantsPath, *variantID)
 	if err != nil {
 		log.Fatalf("Error: %v", err)
 	}
 
-	log.Printf("Variant: %v", variant)
+	log.Printf("Variant: №%s, algo: %s, delay: %s", variant.ID, variant.AlgoVariantDescription.VariantNumber, variant.Delay)
 
-	order := strings.Split(variant.Steps, "->")
-
-	log.Printf("Order: %v", order)
-
-	var config map[string]interface{}
-
-	_, err = toml.DecodeFile(*wokwiConfig, &config)
-	if err != nil {
-		log.Fatalf("Error loading TOML file: %v", err)
+	ap := variant.AlgoVariantDescription.FilePath
+	if *rootPath != "" {
+		ap = *rootPath + "/" + ap
 	}
 
-	labSetup := config["lab_setup"].(map[string]interface{})
+	algoVariant, err := getAlgoVariantByID(ap, variant.AlgoVariantDescription.VariantNumber)
+	if err != nil {
+		log.Fatalf("Error: %v", err)
+	}
 
-	log.Printf("Lab setup: %v", labSetup)
+	log.Printf("Algo variant: %s", algoVariant.Steps)
+
+	order := strings.Split(algoVariant.Steps, "->")
+
+	labSetup, err := getLabSetupFromToml(*wokwiConfig)
+	if err != nil {
+		log.Fatalf("Error: %v", err)
+	}
+
 
 	labConfig := make(map[string]interface{})
 	labConfig["btn1"] = labSetup["btn1"]
-	labConfig["led_delay"] = labSetup["led_delay"]
+	labConfig["led_delay"] = variant.Delay
 	for i, step := range order {
 		labConfig[fmt.Sprintf("led%d", i+1)] = labSetup[step]
 	}
@@ -107,9 +75,9 @@ func main() {
 	}
 	defer f.Close()
 
-	tp := variant.Template
+	tp := algoVariant.Template
 	if *rootPath != "" {
-		tp = *rootPath + "/" + variant.Template
+		tp = *rootPath + "/" + algoVariant.Template
 	}
 
 	tmpl, err := template.ParseFiles(tp)
