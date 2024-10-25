@@ -2,7 +2,8 @@ name: Blinky test one led
 version: 1
 
 steps:
-  - wait-serial: 'Setup ended' 
+# wait for setup
+  - delay: 1000ms
 # button press
   - set-control:
       part-id: {{ .btn1 }}
@@ -13,7 +14,7 @@ steps:
       part-id: {{ .btn1 }}
       control: pressed
       value: 0
-  - delay: 500ms
+  - delay: 100ms
 # leds test
   - expect-pin:
       part-id: {{ .led1 }}
