@@ -14,8 +14,8 @@ func main() {
 	variantID := flag.String("variant", "", "ID of the variant (required)")
 	variantsPath := flag.String("variants-path", "", "Path to the variants file (required)")
 	wokwiConfig := flag.String("wokwi-config", "", "Path to the Wokwi configuration file (required)")
-	outputFile := flag.String("output", "", "Path to the output file (required)")
 	rootPath := flag.String("root-path", "", "Path to the root directory")
+	outputFile := flag.String("output", "", "Path to the output file (required)")
 
 	// Display help message if no flags are provided
 	flag.Usage = func() {
