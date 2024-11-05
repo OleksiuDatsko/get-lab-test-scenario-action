@@ -14,7 +14,7 @@ steps:
       part-id: {{ .btn1 }}
       control: pressed
       value: 0
-  - delay: 100ms
+  - delay: 200ms
 # leds test
   - expect-pin:
       part-id: {{ .led1 }}
