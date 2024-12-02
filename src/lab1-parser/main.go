@@ -63,7 +63,7 @@ func main() {
 
 	labConfig := make(map[string]interface{})
 	labConfig["btn1"] = labSetup["btn1"]
-	labConfig["led_delay"] = variant.Delay
+	labConfig["serial_message"] = labSetup["serial_message"]
 	for i, step := range order {
 		labConfig[fmt.Sprintf("led%d", i+1)] = labSetup[step]
 	}

@@ -14,7 +14,7 @@ steps:
       part-id: {{ .btn1 }}
       control: pressed
       value: 0
-  - delay: 500ms
+  - delay: 200ms
 # leds test
   - expect-pin:
       part-id: {{ .led1 }}
@@ -24,7 +24,8 @@ steps:
       part-id: {{ .led2 }}
       pin: A
       value: 1
-  - delay: {{ .led_delay }}
+  - wait-serial: "{{ .serial_message }}"
+  - delay: 10ms
   - expect-pin:
       part-id: {{ .led3 }}
       pin: A
@@ -33,7 +34,8 @@ steps:
       part-id: {{ .led4 }}
       pin: A
       value: 1
-  - delay: {{ .led_delay }}
+  - wait-serial: "{{ .serial_message }}"
+  - delay: 10ms
   - expect-pin:
       part-id: {{ .led5 }}
       pin: A
@@ -42,7 +44,8 @@ steps:
       part-id: {{ .led6 }}
       pin: A
       value: 1
-  - delay: {{ .led_delay }}
+  - wait-serial: "{{ .serial_message }}"
+  - delay: 10ms
   - expect-pin:
       part-id: {{ .led7 }}
       pin: A
