@@ -1,6 +1,6 @@
 # Generate Test Scenario GitHub Action
 
-This GitHub Action, named "Generate Test Scenario", is designed to generate a test scenario based on variants, lab number, and students' configurations.
+ This GitHub Action, named "Generate Test Scenario", is designed to generate a test scenario based on variants, lab number, and students' configurations.
 
 ## Inputs
 
